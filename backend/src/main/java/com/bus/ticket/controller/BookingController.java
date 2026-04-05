@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/bookings")
-@CrossOrigin(origins = "http://localhost:5173")
 public class BookingController {
 
     @Autowired
@@ -22,10 +22,16 @@ public class BookingController {
 
     @PostMapping("/create")
     public Booking createBooking(@RequestBody Booking booking) {
-        // Calculate total amount with 20% discount for special passengers
+        System.out.println(">>> Booking request for: " + booking.getDestination());
+        
+        if (booking.getDestination() == null || booking.getDestination().trim().isEmpty()) {
+            throw new RuntimeException("ERROR: Destination is missing in your booking request!");
+        }
+
         Bus bus = busRepository.findByDestination(booking.getDestination());
         if (bus == null) {
-            throw new RuntimeException("Destination not found!");
+            System.err.println("!!! DB Error: Route '" + booking.getDestination() + "' not found in database.");
+            throw new RuntimeException("Route Error: Destination not found in database. Please check your data seeding.");
         }
 
         // Logic refined: Fare based on model
@@ -51,6 +57,7 @@ public class BookingController {
         bus.setTakenSeats(currentTaken);
         
         busRepository.save(bus);
+        System.out.println(">>> Booking Successful for " + booking.getPassengerName());
         return bookingRepository.save(booking);
     }
 
