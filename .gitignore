@@ -1,0 +1,32 @@
+# BusTick Pro: Project Maintenance File
+# Ignore standard dependencies but KEEP the /bin folder for portability
+
+# React / Node
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.eslintcache
+
+# Spring Boot / Java
+backend/target/
+backend/.mvn/
+backend/*.jar
+backend/*.war
+
+# Persistence
+backend/*.mv.db
+backend/*.trace.db
+
+# IDE / System
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+.settings/
+.classpath
+.project
+.factorypath
+
+# Bundled Binaries (CRITICAL: DO NOT IGNORE /bin)
+# !bin/
