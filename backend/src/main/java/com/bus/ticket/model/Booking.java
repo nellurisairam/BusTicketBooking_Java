@@ -10,7 +10,10 @@ public class Booking {
     private Long id;
     
     private String passengerName;
+    private String source;
     private String destination;
+    private String boardingPoint;
+    private String droppingPoint;
     private double totalAmount;
     private int regularPassengers;
     private int discountedPassengers;
@@ -38,8 +41,14 @@ public class Booking {
     public void setId(Long id) { this.id = id; }
     public String getPassengerName() { return passengerName; }
     public void setPassengerName(String passengerName) { this.passengerName = passengerName; }
+    public String getSource() { return source; }
+    public void setSource(String source) { this.source = source; }
     public String getDestination() { return destination; }
     public void setDestination(String destination) { this.destination = destination; }
+    public String getBoardingPoint() { return boardingPoint; }
+    public void setBoardingPoint(String boardingPoint) { this.boardingPoint = boardingPoint; }
+    public String getDroppingPoint() { return droppingPoint; }
+    public void setDroppingPoint(String droppingPoint) { this.droppingPoint = droppingPoint; }
     public double getTotalAmount() { return totalAmount; }
     public void setTotalAmount(double totalAmount) { this.totalAmount = totalAmount; }
     public int getRegularPassengers() { return regularPassengers; }

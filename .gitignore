@@ -28,5 +28,16 @@ Thumbs.db
 .project
 .factorypath
 
+# Compilation
+*.class
+
+# Logs
+backend/*.log
+backend/target/
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.eslintcache
+
 # Bundled Binaries (CRITICAL: DO NOT IGNORE /bin)
 # !bin/

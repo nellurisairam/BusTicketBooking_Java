@@ -2,14 +2,18 @@
 setlocal enabledelayedexpansion
 
 :: ##################################################
-:: #      BusTick Pro: Presentation Command         #
+:: #      BusTick Pro: Enterprise Edition            #
 :: ##################################################
-:: # Version: 2.8.0 Elite                           #
-:: # Goal: Zero-Config Deployment for Presentations #
+:: # Version: 3.0.0 Pro                             #
+:: # Goal: Enterprise Stable Architecture            #
 :: ##################################################
 
 title BusTick Pro - Administrative Terminal
 color 0B
+
+:: Environment Injection
+set MAVEN_HOME=%~dp0bin\apache-maven-3.9.6
+set PATH=%MAVEN_HOME%\bin;%PATH%
 
 :MENU
 cls
@@ -17,21 +21,21 @@ echo.
 echo  ##################################################
 echo  #      BusTick Pro: Management Terminal        #
 echo  ##################################################
-echo  # [1] Launch Full Stack System (Elite Mode)     #
-echo  # [2] Update Dependencies (NPM + Maven)        #
-echo  # [3] Run Health Check (Neural Diagnostic)     #
-echo  # [4] Check System Versions (Environment)      #
-echo  # [5] Database Console (H2 Dashboard)          #
-echo  # [6] Prepare Presentation (Pro Build)         #
-echo  # [7] Exit                                     #
+echo  # [1] Launch System (Spring Boot + React)        #
+echo  # [2] Full Clean Rebuild (Clear Cache + Build)   #
+echo  # [3] Update Dependencies (NPM + Maven)         #
+echo  # [4] Running Diagnostic Neural Check           #
+echo  # [5] Database Console (H2 Dashboard)           #
+echo  # [6] Prepare Presentation (Pro Build)          #
+echo  # [7] Exit                                      #
 echo  ##################################################
 echo.
 set /p selection="Enter Selection [1-7]: "
 
 if "%selection%"=="1" goto LAUNCH
-if "%selection%"=="2" goto UPDATE
-if "%selection%"=="3" goto HEALTH
-if "%selection%"=="4" goto VERSIONS
+if "%selection%"=="2" goto REBUILD
+if "%selection%"=="3" goto UPDATE
+if "%selection%"=="4" goto HEALTH
 if "%selection%"=="5" goto DATABASE
 if "%selection%"=="6" goto BUILD
 if "%selection%"=="7" exit
@@ -39,18 +43,28 @@ goto MENU
 
 :LAUNCH
 cls
-echo Launching Neural Handshake...
-:: Local Maven Injection
-set MAVEN_HOME=%~dp0bin\apache-maven-3.9.6
-set PATH=%MAVEN_HOME%\bin;%PATH%
-
-start /b cmd /c "cd backend && mvn spring-boot:run"
-start /b cmd /c "cd frontend && npm run dev"
+echo [INFO] Launching Neural Handshake...
+start "BusTick Backend" /D "%~dp0backend" cmd /c "mvn spring-boot:run"
+start "BusTick Frontend" /D "%~dp0frontend" cmd /c "npm run dev"
 echo.
 echo Terminal Activated! 
-echo Frontend: http://localhost:5173
-echo Backend: http://localhost:8080
+echo Dashboard: http://localhost:5173
+echo API Docs: http://localhost:8080/swagger-ui/index.html
 echo.
+echo Press any key to return to menu...
+pause > nul
+goto MENU
+
+:REBUILD
+cls
+echo [SYSTEM] Initiating Full Clean Rebuild...
+echo Step 1: Cleaning Backend Artifacts...
+cd backend && call mvn clean install -DskipTests
+cd ..
+echo Step 2: Refreshing Frontend Nodes...
+cd frontend && call npm install
+cd ..
+echo [SUCCESS] Rebuild complete. 
 pause
 goto MENU
 
@@ -59,9 +73,7 @@ cls
 echo Re-initializing Fleet Dependencies...
 cd frontend && call npm install
 cd ..
-set MAVEN_HOME=%~dp0bin\apache-maven-3.9.6
-set PATH=%MAVEN_HOME%\bin;%PATH%
-cd backend && call mvn clean install
+cd backend && call mvn dependency:resolve
 cd ..
 echo Done.
 pause
@@ -70,29 +82,23 @@ goto MENU
 :HEALTH
 cls
 echo Running Neural Diagnostic...
-set MAVEN_HOME=%~dp0bin\apache-maven-3.9.6
-set PATH=%MAVEN_HOME%\bin;%PATH%
-mvn -version > nul 2>&1
+java -version
+if %errorlevel% neq 0 (
+    echo [CRITICAL ERROR] Java Runtime NOT detected!
+) else (
+    echo [SUCCESS] Java Runtime: OK
+)
+call mvn -version > nul 2>&1
 if %errorlevel% neq 0 (
     echo [ERROR] Maven not detected in local /bin folder!
 ) else (
     echo [SUCCESS] Maven Runtime: OK
 )
+echo Checking Ports...
 netstat -ano | findstr :8080 > nul
 if %errorlevel% equ 0 (
     echo [WARNING] Port 8080 occupied! Potential conflict.
-) else (
-    echo [SUCCESS] Backend Port 8080: VACANT
 )
-pause
-goto MENU
-
-:VERSIONS
-cls
-echo Scanning Environment...
-node -v
-npm -v
-mvn -v
 pause
 goto MENU
 
