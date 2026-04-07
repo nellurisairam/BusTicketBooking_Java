@@ -4,11 +4,12 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-public class Booking {
+public class Booking extends Auditable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String passengerName;
     private String source;
     private String destination;
@@ -22,20 +23,6 @@ public class Booking {
     private String status; // PAID or UNPAID
 
     public Booking() {}
-
-    public Booking(Long id, String passengerName, String destination, double totalAmount, 
-                   int regularPassengers, int discountedPassengers, String selectedSeats, 
-                   LocalDateTime bookingTime, String status) {
-        this.id = id;
-        this.passengerName = passengerName;
-        this.destination = destination;
-        this.totalAmount = totalAmount;
-        this.regularPassengers = regularPassengers;
-        this.discountedPassengers = discountedPassengers;
-        this.selectedSeats = selectedSeats;
-        this.bookingTime = bookingTime;
-        this.status = status;
-    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

@@ -1,16 +1,21 @@
 package com.bus.ticket.controller;
 
+import com.bus.ticket.dto.BusDTO;
 import com.bus.ticket.model.Booking;
 import com.bus.ticket.model.Bus;
-import com.bus.ticket.repository.BookingRepository;
-import com.bus.ticket.repository.BusRepository;
+import com.bus.ticket.service.BookingService;
+import com.bus.ticket.service.BusService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.time.LocalDateTime;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
-import com.bus.ticket.service.BusService;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -18,125 +23,61 @@ import com.bus.ticket.service.BusService;
 public class BookingController {
 
     @Autowired
-    private BookingRepository bookingRepository;
-
-    @Autowired
-    private BusRepository busRepository;
+    private BookingService bookingService;
 
     @Autowired
     private BusService busService;
 
     @PostMapping("/create")
-    public Booking createBooking(@RequestBody Booking booking) {
-        System.out.println(">>> Booking request for: " + booking.getDestination());
-        
-        if (booking.getDestination() == null || booking.getDestination().trim().isEmpty()) {
-            throw new RuntimeException("ERROR: Destination is missing in your booking request!");
-        }
-
-        Bus bus = busRepository.findBySourceAndDestination(booking.getSource(), booking.getDestination());
-        if (bus == null) {
-            bus = busRepository.findByDestination(booking.getDestination()); // fallback
-        }
-        
-        if (bus == null) {
-            System.err.println("!!! DB Error: Route '" + booking.getSource() + " -> " + booking.getDestination() + "' not found.");
-            throw new RuntimeException("Route Error: Destination not found.");
-        }
-
-        // We respect the totalAmount sent by frontend (which includes promo discounts)
-        // unless it's missing, in which case we calculate it.
-        if (booking.getTotalAmount() <= 0) {
-            busService.calculateDynamicFare(bus);
-            double dynamicFare = bus.getDynamicFare();
-            double discountedFare = dynamicFare * 0.8;
-            double calculatedTotal = (booking.getRegularPassengers() * dynamicFare) + (booking.getDiscountedPassengers() * discountedFare);
-            booking.setTotalAmount(Math.round(calculatedTotal * 100.0) / 100.0);
-        }
-        
-        booking.setBookingTime(LocalDateTime.now());
-        booking.setStatus("PAID");
-        
-        int totalPassengers = booking.getRegularPassengers() + booking.getDiscountedPassengers();
-        
-        // Update bus seats availability AND track exactly which seats are taken
-        bus.setAvailableSeats(bus.getAvailableSeats() - totalPassengers);
-        
-        // Append new seats to the takenSeats string
-        String currentTaken = bus.getTakenSeats() == null ? "" : bus.getTakenSeats();
-        if (!currentTaken.isEmpty() && !booking.getSelectedSeats().isEmpty()) {
-            currentTaken += ", ";
-        }
-        currentTaken += booking.getSelectedSeats();
-        bus.setTakenSeats(currentTaken);
-        
-        busRepository.save(bus);
-        System.out.println(">>> Booking Successful for " + booking.getPassengerName());
-        return bookingRepository.save(booking);
+    public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) {
+        return ResponseEntity.ok(bookingService.createBooking(booking));
     }
 
     @GetMapping("/buses")
-    public List<Bus> getAllBuses() {
-        return busRepository.findAll();
+    public ResponseEntity<List<BusDTO>> getAllBuses() {
+        return ResponseEntity.ok(busService.getAllActiveBuses());
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/buses")
-    public Bus addBusRoute(@RequestBody Bus bus) {
-        if (bus.getAvailableSeats() <= 0) {
-            bus.setAvailableSeats(20); // Default capacity
-        }
-        return busRepository.save(bus);
+    public ResponseEntity<BusDTO> addBusRoute(@RequestBody BusDTO busDTO) {
+        return ResponseEntity.ok(busService.saveBus(busDTO));
     }
 
     @GetMapping("/history")
-    public List<Booking> getHistory() {
-        return bookingRepository.findAll();
+    public ResponseEntity<List<Booking>> getHistory() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        List<Booking> all = bookingService.getAllBookings();
+        
+        // Senior Level Logic: Only Admins see global history, users see personal history
+        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+            return ResponseEntity.ok(all);
+        }
+        
+        String username = auth != null ? auth.getName() : null;
+        List<Booking> personal = all.stream()
+                .filter(b -> b.getPassengerName() != null && b.getPassengerName().equals(username))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(personal);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBooking(@PathVariable Long id) {
-        bookingRepository.findById(id).ifPresent(booking -> {
-            Bus bus = busRepository.findByDestination(booking.getDestination());
-            if (bus != null) {
-                int freedSeats = booking.getRegularPassengers() + booking.getDiscountedPassengers();
-                bus.setAvailableSeats(bus.getAvailableSeats() + freedSeats);
-
-                // Sophisticated seat removal logic
-                String[] currentTaken = bus.getTakenSeats() != null ? bus.getTakenSeats().split(",\\s*") : new String[0];
-                String[] cancelledSeats = booking.getSelectedSeats() != null ? booking.getSelectedSeats().split(",\\s*") : new String[0];
-                
-                StringBuilder updatedTaken = new StringBuilder();
-                for (String seat : currentTaken) {
-                    boolean wasCancelled = false;
-                    for (String cancelled : cancelledSeats) {
-                        if (seat.trim().equals(cancelled.trim())) {
-                            wasCancelled = true;
-                            break;
-                        }
-                    }
-                    if (!wasCancelled) {
-                        if (updatedTaken.length() > 0) updatedTaken.append(", ");
-                        updatedTaken.append(seat);
-                    }
-                }
-                bus.setTakenSeats(updatedTaken.toString());
-                busRepository.save(bus);
-            }
-            bookingRepository.deleteById(id);
-            System.out.println(">>> Record Synchronized: Seats restored for route " + booking.getDestination());
-        });
+    public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
+        bookingService.cancelBooking(id);
+        return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/analytics")
-    public Map<String, Object> getAnalytics() {
-        List<Booking> all = bookingRepository.findAll();
+    public ResponseEntity<Map<String, Object>> getAnalytics() {
+        List<Booking> all = bookingService.getAllBookings();
         double totalRevenue = all.stream().mapToDouble(Booking::getTotalAmount).sum();
         long totalTickets = all.size();
         
         Map<String, Object> stats = new HashMap<>();
         stats.put("totalRevenue", totalRevenue);
         stats.put("totalTickets", totalTickets);
-        stats.put("fleetCount", busRepository.count());
-        return stats;
+        stats.put("fleetCount", busService.getAllActiveBuses().size());
+        return ResponseEntity.ok(stats);
     }
 }

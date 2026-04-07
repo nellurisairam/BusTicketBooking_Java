@@ -1,37 +1,35 @@
 package com.bus.ticket.model;
 
-import lombok.*;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-public class Review {
+public class Review extends Auditable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String passengerName;
-    private int rating; 
+    private String username;
+    private String busPlateNumber;
+    private int rating; // 1 to 5
     private String comment;
-    private LocalDateTime timestamp = LocalDateTime.now();
 
-    @ManyToOne
-    @JoinColumn(name = "bus_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bus_id", nullable = false)
     private Bus bus;
 
-    // Manual Accessors
+    public Review() {}
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
-    public String getPassengerName() { return passengerName; }
-    public void setPassengerName(String passengerName) { this.passengerName = passengerName; }
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+    public String getBusPlateNumber() { return busPlateNumber; }
+    public void setBusPlateNumber(String busPlateNumber) { this.busPlateNumber = busPlateNumber; }
     public int getRating() { return rating; }
     public void setRating(int rating) { this.rating = rating; }
     public String getComment() { return comment; }
     public void setComment(String comment) { this.comment = comment; }
-    public LocalDateTime getTimestamp() { return timestamp; }
-    public void setTimestamp(LocalDateTime timestamp) { this.timestamp = timestamp; }
     public Bus getBus() { return bus; }
     public void setBus(Bus bus) { this.bus = bus; }
 }

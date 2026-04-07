@@ -1,14 +1,12 @@
 package com.bus.ticket.model;
 
-import lombok.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "app_users")
-@NoArgsConstructor
-@AllArgsConstructor
-public class User {
+public class User extends Auditable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,13 +27,14 @@ public class User {
     @Column(nullable = false)
     private double walletBalance = 5000.0;
 
+    public User() {}
+
     public User(String username, String password, String role) {
         this.username = username;
         this.password = password;
         this.role = role;
     }
 
-    // Manual Accessors
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getUsername() { return username; }

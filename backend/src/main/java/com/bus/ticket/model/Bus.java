@@ -1,13 +1,12 @@
 package com.bus.ticket.model;
 
-import lombok.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import java.util.List;
+import java.util.ArrayList;
 
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
-public class Bus {
+public class Bus extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,7 +37,7 @@ public class Bus {
     private String droppingPoints;
 
     @OneToMany(mappedBy = "bus", cascade = CascadeType.ALL)
-    private java.util.List<Review> reviews = new java.util.ArrayList<>();
+    private List<Review> reviews = new ArrayList<>();
 
     private int safetyScore = 5;
 
@@ -48,7 +47,8 @@ public class Bus {
     @Transient
     private double dynamicFare;
 
-    // Manual Accessors to bypass Lombok environment issues
+    public Bus() {}
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getDestination() { return destination; }
@@ -75,8 +75,8 @@ public class Bus {
     public void setBoardingPoints(String boardingPoints) { this.boardingPoints = boardingPoints; }
     public String getDroppingPoints() { return droppingPoints; }
     public void setDroppingPoints(String droppingPoints) { this.droppingPoints = droppingPoints; }
-    public java.util.List<Review> getReviews() { return reviews; }
-    public void setReviews(java.util.List<Review> reviews) { this.reviews = reviews; }
+    public List<Review> getReviews() { return reviews; }
+    public void setReviews(List<Review> reviews) { this.reviews = reviews; }
     public int getSafetyScore() { return safetyScore; }
     public void setSafetyScore(int safetyScore) { this.safetyScore = safetyScore; }
     public String getSafetyFeatures() { return safetyFeatures; }
