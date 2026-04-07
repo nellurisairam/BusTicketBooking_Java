@@ -1,6 +1,6 @@
-# 🎫 BusTick Pro: Elite v3.2.0 Master Fleet Architecture
+# 🎫 BusTick Pro: Elite v4.2.0 Master Fleet Architecture
 
-**BusTick Pro** is a cutting-edge, industrial-grade bus ticketing and real-time fleet coordination system. This project was developed as a Final Year B.Tech Academic Masterpiece to demonstrate proficiency in Full-Stack Java/React engineering, RESTful API design, and asynchronous state management.
+**BusTick Pro** is a cutting-edge, industrial-grade bus ticketing and real-time fleet coordination system. Developed as a Final Year B.Tech Academic Masterpiece, it demonstrates proficiency in Full-Stack Java/React engineering, JWT-secured RESTful API design, AI-driven dynamic pricing, and asynchronous state management.
 
 ---
 
@@ -8,8 +8,8 @@
 Launch the entire ecosystem with **zero-configuration**:
 1.  Navigate to the root directory.
 2.  Double-click **`run_project.bat`**.
-3.  Select **Option [1]** (Launch Full Stack System).
-4.  **Credentials**: `admin` / `admin`
+3.  Select **Option [1]** (Launch Full Stack System). The script automatically bypasses execution restrictions and port conflicts.
+4.  **Credentials**: Create a new account on the startup screen or use any pre-loaded admin accounts.
 
 ---
 
@@ -17,12 +17,12 @@ Launch the entire ecosystem with **zero-configuration**:
 
 | Layer | Technology | Role |
 | :--- | :--- | :--- |
-| **Frontend** | React 18 / Vite / TS | High-Resolution Kinetic Dashboard |
-| **Backend** | Spring Boot 3 (Java 21) | Indestructible REST API & Business Logic |
+| **Frontend** | React 18 / Vite / TS | High-Resolution Kinetic Dashboard with JWT Interceptors |
+| **Backend** | Spring Boot 3 (Java 21) | Indestructible REST API (Vanilla POJO architecture, no Lombok) |
+| **Security** | JWT (JSON Web Tokens) | Stateless Authentication & Route Protection |
 | **Animation** | Framer Motion | High-Gravity UI/UX Interactions |
-| **Icons** | Lucide-React | Clinical Industrial Iconography |
-| **Database** | H2 SQL Ledger | Persistent In-Memory Data Storage |
-| **Infrastructure** | Portable Apache Maven | Self-Contained Build & Deploy Environment |
+| **Database** | H2 SQL Ledger | Persistent In-Memory Relational Data Storage |
+| **Infrastructure**| Portable Apache Maven | Self-Contained Build & Deploy Environment |
 
 ---
 
@@ -30,49 +30,61 @@ Launch the entire ecosystem with **zero-configuration**:
 
 ```mermaid
 graph TD
-    A[Elite React UI] -- "REST Handshake (Axios)" --> B[Spring Boot Master API]
-    B -- "JPA Data Sync" --> C[H2 SQL Persistent Storage]
-    B -- "Coordinate Mapping" --> D[Live Radar Tracking Engine]
-    C -- "Financial Audit" --> A
-    E[run_project.bat] -- "DevOps" --> B
-    E -- "Production Build" --> A
-    B -- "Seat Mapping" --> D
+    A[Elite React UI] -- "Auth Request" --> B[JWT Security Filter]
+    B -- "Secured REST Handshake" --> C[Spring Boot Master API]
+    C -- "JPA Data Sync" --> D[H2 SQL Persistent Storage]
+    
+    subgraph Frontend Ecosystem
+    A1[JWT LocalStorage] -.-> A
+    A2[PDF Generator] -.-> A
+    end
+
+    subgraph Core Engines
+    C1[Dynamic Weather Pricing Engine] -- "Metrics" --> C
+    C2[Wallet & Loyalty Engine] -- "Tx Ledger" --> C
+    C3[Review & Ratings API] --> C
+    end
+
+    E[run_project.bat] -- "Port Cleansed DevOps" --> C
+    E -- "Production Vite Build" --> A
 ```
 
 ---
 
 ## ✨ Core System Modules
 
-### 📊 1. Omni-Vector Dashboard (Analytics)
-- **Revenue Flux Charts**: Dynamic SVG-based financial reports showing market trends.
-- **Neural Activity Feed**: Real-time audit logs of the latest manifest synchronized with the backend.
-- **Fleet Statistics**: Live tracking of Active Buses, Total Revenue, and System Health.
-
-### 🎫 2. Tectonic Ticket Hub (Booking)
-- **Vector Selection**: Pick from diverse fleet tiers (Standard, Luxury, Ultra Premium).
+### 🎫 1. Advanced Ticketing & Dynamic Pricing
+- **AI-Surge Pricing**: Reactive algorithm scales fares based on destination weather parameters (e.g. Rain triggers surge pricing).
 - **Matrix Seat Allocation**: Interactive coordinate system for seat selection with occupancy verification.
-- **Digital Neural Permits**: Instant generation of QR-coded tickets with print-ready CSS exports.
+- **Promo Engine**: Integrated coupon system (e.g., `FESTIVE20`) and instant digital PDF Permit Generation.
 
-### 🛰️ 3. Fleet Logistics Radar (Tracking)
-- **Kinetic Radar Map**: A grid-stabilized mapping system showing real-time location vectors of all buses.
-- **Fleet Status Sidebar**: Industrial metrics for every bus, including GPS stability and destination tooltips.
+### 💳 2. Virtual Financial Wallet & Loyalty
+- **Wallet Rehydration**: Instant top-up system tied to user instances.
+- **Loyalty Tier Logic**: Dynamic rank shifting (SILVER/GOLD/PLATINUM) based on past manifest interactions.
 
-### 🛡️ 4. Security & Admin
-- **Master Authentication**: High-fidelity multi-mode login with session validation.
-- **Indestructible API**: Backend reinforced with global CORS and null-safe transaction logic.
+### 🛡️ 3. Security & Admin Analytics
+- **Master Authentication**: High-fidelity Signup/Login flow featuring JWT session tracking and a secure logout protocol.
+- **Omni-Vector Dashboard**: Admin portal offering dynamic SVG-based fleet profitability logs, active manifests, and revenue analytics.
+
+### 🛰️ 4. Logistics Radar & Consumer Feedback
+- **Kinetic Radar Map**: Grid-stabilized mapping system for live vehicle tracking endpoints.
+- **Passenger Voice**: Built-in 5-star rating mechanisms and textual reviews per fleet vehicle.
 
 ---
 
 ## 💾 Database Schema Summary
-- **Entity: Bus** (ID, Plate, Destination, Fare, Available Seats, Taken Seats Array).
-- **Entity: Booking** (ID, Passenger, Route, Selected Seats, Total Amount, Timestamp).
+- **User**: (ID, Username, Password, Role, WalletBalance)
+- **Bus**: (ID, Plate, Source, Destination, Fare, Weather, Amenities, Available/Taken Seats)
+- **Booking**: (ID, Passenger, Route, Selected Seats, Total Amount, Timestamp)
+- **Review**: (ID, BusPlateNumber, Username, Rating, Comment)
 
 ---
 
 ## 🏁 Future Enhancements
-- [ ] Integration with Real GPS Satellites via API.
-- [ ] Blockchain-based Seat Manifest Ledger.
-- [ ] AI-driven Dynamic Fare Calculation based on Demand.
+- [x] Integrate AI-driven Dynamic Fare Calculation.
+- [x] End-to-End User Auth / Role Management.
+- [x] Secure System Logout Procedures.
+- [ ] Integration with Real GPS Microservices.
 
-**Version: v3.2.0 Elite (FINAL MASTER)**
+**Version: v4.2.0 Elite (FINAL MASTER)**
 **Certified Academic Grade: A+ Ready**
