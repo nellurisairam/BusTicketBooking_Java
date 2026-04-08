@@ -1,90 +1,99 @@
-# 🎫 BusTick Pro: Elite v4.2.0 Master Fleet Architecture
+# 🚀 NexRoute Enterprise: Next-Gen Mobility & Logistics Ecosystem
 
-**BusTick Pro** is a cutting-edge, industrial-grade bus ticketing and real-time fleet coordination system. Developed as a Final Year B.Tech Academic Masterpiece, it demonstrates proficiency in Full-Stack Java/React engineering, JWT-secured RESTful API design, AI-driven dynamic pricing, and asynchronous state management.
+**NexRoute** is a high-fidelity, full-stack mobility platform designed to revolutionize the bus ticketing industry. More than just a booking app, it is a comprehensive ecosystem featuring an **Interactive AI Assistant**, a **FinTech Wallet Hub**, and an **IoT-ready Fleet Telemetry Radar**.
 
----
-
-## 🚀 Presentation Mode (Quick Start)
-Launch the entire ecosystem with **zero-configuration**:
-1.  Navigate to the root directory.
-2.  Double-click **`run_project.bat`**.
-3.  Select **Option [1]** (Launch Full Stack System). The script automatically bypasses execution restrictions and port conflicts.
-4.  **Credentials**: Create a new account on the startup screen or use any pre-loaded admin accounts.
+Built with a focus on premium UI/UX, enterprise-grade stability, and modern design principles (Glassmorphism), NexRoute stands as a benchmark for final-year project excellence.
 
 ---
 
-## 🛠️ Elite Technical Stack
+## 🌟 Elite Feature Suite
 
-| Layer | Technology | Role |
-| :--- | :--- | :--- |
-| **Frontend** | React 18 / Vite / TS | High-Resolution Kinetic Dashboard with JWT Interceptors |
-| **Backend** | Spring Boot 3 (Java 21) | Indestructible REST API (Vanilla POJO architecture, no Lombok) |
-| **Security** | JWT (JSON Web Tokens) | Stateless Authentication & Route Protection |
-| **Animation** | Framer Motion | High-Gravity UI/UX Interactions |
-| **Database** | H2 SQL Ledger | Persistent In-Memory Relational Data Storage |
-| **Infrastructure**| Portable Apache Maven | Self-Contained Build & Deploy Environment |
+### 1. 🤖 NexBot AI Assistant (Interactive Agent)
+A persistent, conversational AI assistant that provides real-time support.
+- **Natural Language Processing**: Contextually understands queries about discounts, rewards, and live status.
+- **Micro-Interactions**: Features simulated "typing" logic and interactive quick-reply chips.
+- **Global Availability**: Accessible from any tab to guide travelers through the booking journey.
 
----
+### 2. 🛰️ Live Fleet Telemetry Radar (IoT Simulation)
+An advanced logistics dashboard that tracks the fleet with space-grade precision.
+- **Real-Time Data**: Tracks live speed (km/h), cabin AC temperature, and GPS coordinates.
+- **Dynamic Milestones**: Shows specific geographic corridors and transit checkpoints.
+- **ETA Intelligence**: Automatically calculates the estimated time of arrival for every vessel.
 
-## 🏛️ System Architecture Diagram
+### 3. 💳 NexWallet FinTech Hub
+A dedicated financial control center for seamless travel transactions.
+- **Elite Virtual Card**: A sleek, digital representation of the user's travel funds.
+- **Service Ledger**: Full transaction history showing credits, debits, and reward claims.
+- **Instant Recharge**: A specialized terminal for topping up funds with various payment simulations.
 
-```mermaid
-graph TD
-    A[Elite React UI] -- "Auth Request" --> B[JWT Security Filter]
-    B -- "Secured REST Handshake" --> C[Spring Boot Master API]
-    C -- "JPA Data Sync" --> D[H2 SQL Persistent Storage]
-    
-    subgraph Frontend Ecosystem
-    A1[JWT LocalStorage] -.-> A
-    A2[PDF Generator] -.-> A
-    end
+### 4. 🏢 Admin Command & Control Center
+A powerful administrative engine for fleet operators.
+- **Revenue Analytics**: Visual sparklines and data metrics for net growth tracking.
+- **Fleet Protocols**: Command buttons for system-wide GPS syncing and emergency broadcasts.
+- **Manifest Intelligence**: Real-time load factor monitoring and utilization reports.
 
-    subgraph Core Engines
-    C1[Dynamic Weather Pricing Engine] -- "Metrics" --> C
-    C2[Wallet & Loyalty Engine] -- "Tx Ledger" --> C
-    C3[Review & Ratings API] --> C
-    end
-
-    E[run_project.bat] -- "Port Cleansed DevOps" --> C
-    E -- "Production Vite Build" --> A
-```
+### 5. 🛠️ Pro-Support & Service Ledger
+A transparent customer service hub for post-booking assistance.
+- **Guided Support**: Category-based issue reporting and ticket history ledger.
+- **Status Tracking**: Visual badges show the progress of support tickets (e.g., *Resolved*, *Under Review*).
 
 ---
 
-## ✨ Core System Modules
-
-### 🎫 1. Advanced Ticketing & Dynamic Pricing
-- **AI-Surge Pricing**: Reactive algorithm scales fares based on destination weather parameters (e.g. Rain triggers surge pricing).
-- **Matrix Seat Allocation**: Interactive coordinate system for seat selection with occupancy verification.
-- **Promo Engine**: Integrated coupon system (e.g., `FESTIVE20`) and instant digital PDF Permit Generation.
-
-### 💳 2. Virtual Financial Wallet & Loyalty
-- **Wallet Rehydration**: Instant top-up system tied to user instances.
-- **Loyalty Tier Logic**: Dynamic rank shifting (SILVER/GOLD/PLATINUM) based on past manifest interactions.
-
-### 🛡️ 3. Security & Admin Analytics
-- **Master Authentication**: High-fidelity Signup/Login flow featuring JWT session tracking and a secure logout protocol.
-- **Omni-Vector Dashboard**: Admin portal offering dynamic SVG-based fleet profitability logs, active manifests, and revenue analytics.
-
-### 🛰️ 4. Logistics Radar & Consumer Feedback
-- **Kinetic Radar Map**: Grid-stabilized mapping system for live vehicle tracking endpoints.
-- **Passenger Voice**: Built-in 5-star rating mechanisms and textual reviews per fleet vehicle.
+## 🎨 Design Aesthetics
+- **Nex-Gen Glassmorphism**: High-fidelity frosted glass effects and responsive depth across all containers.
+- **Dynamic Mesh Background**: A living, animated geometric background that gives the UI an "atmospheric" feel.
+- **Success Celebration**: Integrated digital confetti protocols for booking confirmations.
+- **Elite Typography**: Utilization of the "Outfit" typography system for a modern, high-fashion tech look.
 
 ---
 
-## 💾 Database Schema Summary
-- **User**: (ID, Username, Password, Role, WalletBalance)
-- **Bus**: (ID, Plate, Source, Destination, Fare, Weather, Amenities, Available/Taken Seats)
-- **Booking**: (ID, Passenger, Route, Selected Seats, Total Amount, Timestamp)
-- **Review**: (ID, BusPlateNumber, Username, Rating, Comment)
+## 🛠️ Technical Stack
+
+### **Frontend**
+- **React 18 & TypeScript**: For a robust, type-safe interactive UI.
+- **Vite**: Ultra-fast build tool and development server.
+- **Framer Motion**: Powering the high-gravity animations and staggered transitions.
+- **Lucide-React**: A premium library of consistent, professional icons.
+- **Axios**: Centralized API management with JWT interceptors.
+
+### **Backend**
+- **Java 21 & Spring Boot**: A production-grade RESTful API architecture.
+- **H2 Database**: High-speed, in-memory SQL persistence for development.
+- **Spring Security**: Stateless JWT-based authentication protocol.
 
 ---
 
-## 🏁 Future Enhancements
-- [x] Integrate AI-driven Dynamic Fare Calculation.
-- [x] End-to-End User Auth / Role Management.
-- [x] Secure System Logout Procedures.
-- [ ] Integration with Real GPS Microservices.
+## 🚀 Getting Started
 
-**Version: v4.2.0 Elite (FINAL MASTER)**
-**Certified Academic Grade: A+ Ready**
+### 1. Backend Setup
+1. Navigate to `backend/`.
+2. Ensure you have Java 21+ and Maven installed.
+3. Run the following command:
+   ```bash
+   mvn spring-boot:run
+   ```
+4. The API will be live at `http://localhost:8080`.
+
+### 2. Frontend Setup
+1. Navigate to `frontend/`.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Launch the development server:
+   ```bash
+   npm run dev
+   ```
+4. Access the platform at `http://localhost:5173`.
+
+---
+
+## 📊 Project Impact
+NexRoute demonstrates a deep understanding of:
+- **State Management**: Managing complex chat logs, financial ledgers, and fleet data across many components.
+- **UX Engineering**: Implementing micro-interactions and accessibility best practices.
+- **Full-Stack Synchronization**: Seamless data flow between a React UI and a Spring Boot microservice.
+
+---
+
+© 2026 NexRoute Enterprise | Final Year Project Excellence
